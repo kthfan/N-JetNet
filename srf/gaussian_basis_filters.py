@@ -38,7 +38,7 @@ class GaussianBasisFiltersShared(nn.Module):
         x_hermites = coefs * (x / 2 ** 0.5) ** orders.view(1, 1, -1, 1)
 
         # Indices which are used to build 2d Gaussian derivative filters.
-        x_indices, y_indices = self._mutual_indices(max_order)
+        x_indices, y_indices = list(zip(*[(i, j) for i in range(max_order) for j in range(max_order-i-1, -1, -1)]))
         self.x_indices, self.y_indices = torch.LongTensor(x_indices), torch.LongTensor(y_indices)
 
         self.register_buffer('x', x, persistent=False)
@@ -68,6 +68,7 @@ class GaussianBasisFiltersShared(nn.Module):
 
         # Compute 0-(max_order-1)th order Gaussian derivatives
         basis = (-1.0 / (2 ** 0.5 * sigmas)) ** self.orders.view(1, -1, 1, 1) * hermites * gauss
+        basis = basis * sigmas ** self.orders.view(1, -1, 1, 1) # normalize
         basis = basis.squeeze(dim=2) # [batch_size, max_order, filter size]
 
         # Compute 2d Gaussian derivatives.
@@ -89,8 +90,6 @@ class GaussianBasisFiltersShared(nn.Module):
                 coefs[t, s] = 2 * t / s * coefs[t - 1, s - 1]
         return coefs
 
-    def _mutual_indices(self, size):
-        return list(zip(*[(i, j) for i in range(size) for j in range(i, size)]))
 
 
 
