@@ -1,10 +1,10 @@
 # N-JetNet
-Implementation of "Resolution learning in deep convolutional networks using scale-space theory", Silvia L.Pintea, Nergis Tomen, Stanley F. Goes, Marco Loog, Jan C. van Gemert, Transactions on Image Processing, 2021.
+PyTorch implementation of "Resolution learning in deep convolutional networks using scale-space theory", Silvia L.Pintea, Nergis Tomen, Stanley F. Goes, Marco Loog, Jan C. van Gemert, Transactions on Image Processing, 2021.
 The training time of this implementation is approximately 0.74 times of that of "https://github.com/SilviaLauraPintea/N-JetNet/" (tested in resnet 50).
 
 ## Usage
 
-##### Use `srf.Conv2d`.
+##### Use `srf.SrfConv2d`.
 ```python
 import torch
 import srf
@@ -36,7 +36,7 @@ conv.scales.data[0] = 0
 print(conv(x).shape)
 ```
 
-##### Replace `nn.Conv2d` to `srf.Conv2d`.
+##### Replace `nn.Conv2d` with `srf.SrfConv2d`.
 ```python
 import torchvision
 import srf
