@@ -67,8 +67,7 @@ class GaussianBasisFiltersShared(nn.Module):
         hermites = torch.sum(x_hermites / sigma_hermites, dim=2, keepdim=True) # [batch_size, max_order, 1, filter size]
 
         # Compute 0-(max_order-1)th order Gaussian derivatives
-        basis = (-1.0 / (2 ** 0.5 * sigmas)) ** self.orders.view(1, -1, 1, 1) * hermites * gauss
-        basis = basis * sigmas ** self.orders.view(1, -1, 1, 1) # normalize
+        basis = (-1.0 / (2 ** 0.5)) ** self.orders.view(1, -1, 1, 1) * hermites * gauss # including filter normalization
         basis = basis.squeeze(dim=2) # [batch_size, max_order, filter size]
 
         # Compute 2d Gaussian derivatives.
