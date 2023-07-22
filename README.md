@@ -2,6 +2,14 @@
 PyTorch implementation of "Resolution learning in deep convolutional networks using scale-space theory", Silvia L.Pintea, Nergis Tomen, Stanley F. Goes, Marco Loog, Jan C. van Gemert, Transactions on Image Processing, 2021.
 The training time of this implementation is approximately 0.74 times of that of "https://github.com/SilviaLauraPintea/N-JetNet/" (tested in resnet 50).
 
+## Benchmark
+This benchmark is evaluated on resnet18 with stride=1 and without maxpooling in the stem. Batch size is 64, image size is $64\times 64 \times 3$ and optimizer is Adam. 
+|  method   | speed (iteration/s)  | memory usage (GB) |
+|  ----  | ----  | ---- |
+| [Conv2d](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html) | 16 | 2.7 |
+| [original](https://github.com/SilviaLauraPintea/N-JetNet) | 4.3 | 2.9 |
+| [this](https://github.com/kthfan/N-JetNet/) | 5.1 | 2.9 |
+
 ## Usage
 
 ##### Use `srf.SrfConv2d`.
