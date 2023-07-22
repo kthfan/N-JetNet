@@ -1,6 +1,6 @@
 # N-JetNet
 PyTorch implementation of "Resolution learning in deep convolutional networks using scale-space theory", Silvia L.Pintea, Nergis Tomen, Stanley F. Goes, Marco Loog, Jan C. van Gemert, Transactions on Image Processing, 2021.
-The training time of this implementation is approximately 0.74 times of that of "https://github.com/SilviaLauraPintea/N-JetNet/" (tested in resnet 50).
+This implementation is approximately 1.18 times faster than the [official code](https://github.com/SilviaLauraPintea/N-JetNet/").
 
 ## Benchmark
 This benchmark is evaluated on resnet18 with stride=1 and without maxpooling in the stem. Batch size is 64, image size is $64\times 64 \times 3$ and optimizer is Adam. 
