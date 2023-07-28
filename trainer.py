@@ -36,6 +36,7 @@ class ClassicalTrainer:
             ### model setting ###
             if self.use_cuda:
                 self.model.cuda()
+                self.criterion.cuda()
             self.model.train()
             ######################
 
@@ -61,6 +62,7 @@ class ClassicalTrainer:
         ### model setting ###
         if self.use_cuda:
             self.model.cuda()
+            self.criterion.cuda()
         self.model.eval()
         #####################
 
@@ -176,7 +178,7 @@ class ClassicalTrainer:
         if isinstance(data, (tuple, list)):
             return [self._convert_not_training_data(e) for e in data]
         elif isinstance(data, dict):
-            return {k: self._convert_not_training_data(v) for k, v in data.item()}
+            return {k: self._convert_not_training_data(v) for k, v in data.items()}
         else:
             if detach:
                 data = data.cuda()
