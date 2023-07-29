@@ -181,7 +181,7 @@ class ClassicalTrainer:
             return {k: self._convert_not_training_data(v) for k, v in data.items()}
         else:
             if detach:
-                data = data.cuda()
+                data = data.detach()
             if cpu:
                 data = data.cpu()
             if numpy:
@@ -194,7 +194,7 @@ class ClassicalTrainer:
         if isinstance(data, (tuple, list)):
             return [self._convert_cuda_data(e) for e in data]
         elif isinstance(data, dict):
-            return {k: self._convert_cuda_data(v) for k, v in data.item()}
+            return {k: self._convert_cuda_data(v) for k, v in data.items()}
         else:
             return data.cuda()
 
