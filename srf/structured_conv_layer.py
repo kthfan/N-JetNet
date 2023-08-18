@@ -58,8 +58,9 @@ class SrfConv2d(nn.Module):
         assert (out_channels % groups == 0)
         self.out_channels = out_channels
         self.groups = groups
-        self.stride = stride
+        self.stride = (stride, stride) if isinstance(stride, int) else stride
         self.padding = padding.upper() if isinstance(padding, str) else padding
+        self.padding = (self.padding, self.padding) if isinstance(self.padding, int) else self.padding
 
         """ Define the number of basis based on order. """
         F = int((self.init_order + 1) * (self.init_order + 2) / 2)
@@ -96,20 +97,19 @@ class SrfConv2d(nn.Module):
         """ Compute padding size """
         if isinstance(self.padding, str):
             if self.padding == "SAME":
-                padding_sizes = (get_same_padding_size(filters.shape[-2], self.stride),
-                                get_same_padding_size(filters.shape[-1], self.stride))
+                padding_sizes = (get_same_padding_size(filters.shape[-2], self.stride[0]),
+                                get_same_padding_size(filters.shape[-1], self.stride[1]))
             elif self.padding == "VALID":
                 padding_sizes = (0, 0)
         else:
-            padding_sizes = (self.padding, self.padding) if isinstance(self.padding, int) else self.padding
+            padding_sizes = self.padding
 
-        strides = (self.stride, self.stride) if isinstance(self.stride, int) else self.stride
         """ Perform the convolution. """
         final_conv = F.conv2d(
             input=data,  # NCHW
             weight=filters[0],  # KCHW
             bias=self.bias,
-            stride=strides,
+            stride=self.stride,
             padding=padding_sizes,
             groups=self.groups)
 
@@ -161,8 +161,9 @@ class SrfConvTranspose2d(nn.Module):
         assert (out_channels % groups == 0)
         self.out_channels = out_channels
         self.groups = groups
-        self.stride = stride
+        self.stride = (stride, stride) if isinstance(stride, int) else stride
         self.padding = padding.upper() if isinstance(padding, str) else padding
+        self.padding = (self.padding, self.padding) if isinstance(self.padding, int) else self.padding
         self.output_padding = output_padding
 
         """ Define the number of basis based on order. """
@@ -201,21 +202,19 @@ class SrfConvTranspose2d(nn.Module):
         """ Compute padding size """
         if isinstance(self.padding, str):
             if self.padding == "SAME":
-                padding_sizes = (get_same_padding_size(filters.shape[-2], self.stride),
-                                 get_same_padding_size(filters.shape[-1], self.stride))
+                padding_sizes = (get_same_padding_size(filters.shape[-2], self.stride[0]),
+                                 get_same_padding_size(filters.shape[-1], self.stride[1]))
             elif self.padding == "VALID":
                 padding_sizes = (0, 0)
         else:
-            padding_sizes = (self.padding, self.padding) if isinstance(self.padding, int) else self.padding
-
-        strides = (self.stride, self.stride) if isinstance(self.stride, int) else self.stride
+            padding_sizes = self.padding
 
         """ Perform the convolution. """
         final_conv = F.conv_transpose2d(
             input=data,  # NCHW
             weight=filters[0],  # KCHW
             bias=self.bias,
-            stride=strides,
+            stride=self.stride,
             padding=padding_sizes,
             output_padding=self.output_padding,
             groups=self.groups)
