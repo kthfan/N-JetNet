@@ -33,7 +33,7 @@ class SrfConv2dCompat(nn.Module):
                                dilation=dilation, groups=groups, bias=bias,
                                padding_mode=padding_mode)  # device=device, dtype=dtype)
         else:
-            same_padding_size = get_same_padding_size(kernel_size, stride)
+            same_padding_size = get_same_padding_size(kernel_size, stride, dilation)
             if same_padding_size == padding:
                 padding = 'SAME'
             self.conv = SrfConv2d(in_channels, out_channels, stride=stride, padding=padding,
@@ -67,7 +67,7 @@ class SrfConvTranspose2dCompat(nn.Module):
                                         output_padding=output_padding, dilation=dilation, groups=groups, bias=bias,
                                         padding_mode=padding_mode)  # device=device, dtype=dtype)
         else:
-            same_padding_size = get_same_padding_size(kernel_size, stride)
+            same_padding_size = get_same_padding_size(kernel_size, stride, dilation)
             if same_padding_size == padding:
                 padding = 'SAME'
             self.conv = SrfConvTranspose2d(in_channels, out_channels, stride=stride, padding=padding,
